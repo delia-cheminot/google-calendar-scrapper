@@ -59,10 +59,11 @@ function main() {
   const filteredEvents = filterEventsByKeywords(events, matieres, excludedKeywords);
   const replacedEvents = replaceEventTitles(filteredEvents, titres);
   const coloredEvents = addColorToEvents(replacedEvents, couleurs);
+  const prefixedEvents = addPrefixToTitles(coloredEvents);
 
   // Ajout des événements filtrés et colorés à votre agenda personnel
   const calendar = CalendarApp.getCalendarsByName(agendaPerso)[0];
-  for (const event of coloredEvents) {
+  for (const event of prefixedEvents) {
     addEvent(calendar, event);
   }
 }
@@ -178,5 +179,30 @@ function replaceEventTitles(events, dictionary) {
     }
   }
 
+  return events;
+}
+
+/**
+ * Ajoute des tags au titre des évènements en fonction de la présence de certains mots-clés dans leur description.
+ *
+ * @param {Array<Object>} events - Les évènements à traiter.
+ * @return {Array<Object>} Les évènements avec les tags ajoutés au titre.
+ */
+function addPrefixToTitles(events) {
+  for (let i = 0; i < events.length; i++) {
+    const event = events[i];
+    const description = event.description;
+    let prefix = "";
+    if (description.includes("CM")) {
+      prefix = "[CM] ";
+    } else if (description.includes("TD")) {
+      prefix = "[TD] ";
+    } else if (description.includes("TP")) {
+      prefix = "[TP] ";
+    } else if (description.includes("CTD")) {
+      prefix = "[CTD] ";
+    }
+    event.summary = prefix + event.summary;
+  }
   return events;
 }
