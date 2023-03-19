@@ -84,13 +84,26 @@ function addEvent(calendar, event) {
 
 /**
  * Récupère les événements de la semaine en cours à partir d'un agenda Google public.
+ * Passe à la semaine suivante le week-end.
  *
  * @return {Array<Object>} Les événements de la semaine en cours.
  */
 function getEventsFromPublicCalendar(calendarId) {
   const now = new Date();
-  const startOfWeek = new Date(now.getFullYear(), now.getMonth(), now.getDate() - now.getDay()); // Start of current week
-  const endOfWeek = new Date(now.getFullYear(), now.getMonth(), now.getDate() + (6 - now.getDay())); // End of current week
+  const increment = (now.getDay() === 6 || now.getDay() === 0) ? 7 : 0;
+  const startOfWeek = new Date(now.getFullYear(), now.getMonth(), now.getDate() - getDayWithOffset() + increment); // Start of current week
+  const endOfWeek = new Date(now.getFullYear(), now.getMonth(), now.getDate() + (6 - getDayWithOffset() + increment)); // End of current week
+
+  function getDayWithOffset() {
+  var dayOfWeek = now.getDay();
+  if (dayOfWeek == 0) {
+    dayOfWeek = 6;
+  } else {
+    dayOfWeek--;
+  }
+  return dayOfWeek;
+}
+
   const optionalArgs = {
     timeMin: startOfWeek.toISOString(),
     timeMax: endOfWeek.toISOString(),
