@@ -14,13 +14,14 @@
  * 
  * 4) Sauvegarder puis exécuter le script en cliquant sur les boutons en haut de l'écran.
  */
+
 function main() {
 
   /* Nom de l'agenda personnel à utiliser */
   const agendaPerso = 'Cours';
 
   /* Agenda public, ici ISI 2A */
-  const calendarId = '10d79c21648406b69db795f20f87f48d5bb330bef3dcbe11ab31d3325e5f9812@group.calendar.google.com'; // ID of the public calendar
+  const calendarId = '10d79c21648406b69db795f20f87f48d5bb330bef3dcbe11ab31d3325e5f9812@group.calendar.google.com';
 
   /* Ajouter les mots-clés correspondant au titre des matières à garder */
   const matieres = ['ACSS', 'PIEP', 'ALGOA', 'responsable', 'IHM', 'ACOL', 'Algo avancee', 'Anglais G12', 'CAWEB', 'Management'];
@@ -61,7 +62,6 @@ function main() {
   const coloredEvents = addColorToEvents(replacedEvents, couleurs);
   const prefixedEvents = addPrefixToTitles(coloredEvents);
 
-  // Ajout des événements filtrés et colorés à votre agenda personnel
   const calendar = CalendarApp.getCalendarsByName(agendaPerso)[0];
   for (const event of prefixedEvents) {
     addEvent(calendar, event);
@@ -91,8 +91,8 @@ function addEvent(calendar, event) {
 function getEventsFromPublicCalendar(calendarId) {
   const now = new Date();
   const increment = (now.getDay() === 6 || now.getDay() === 0) ? 7 : 0;
-  const startOfWeek = new Date(now.getFullYear(), now.getMonth(), now.getDate() - getDayWithOffset() + increment); // Start of current week
-  const endOfWeek = new Date(now.getFullYear(), now.getMonth(), now.getDate() + (6 - getDayWithOffset() + increment)); // End of current week
+  const startOfWeek = new Date(now.getFullYear(), now.getMonth(), now.getDate() - getDayWithOffset() + increment);
+  const endOfWeek = new Date(now.getFullYear(), now.getMonth(), now.getDate() + (6 - getDayWithOffset() + increment));
 
   function getDayWithOffset() {
   var dayOfWeek = now.getDay();
